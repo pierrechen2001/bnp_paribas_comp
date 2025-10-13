@@ -1,0 +1,29 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-b from-[#f8f9fb] to-white text-bnp-black;
+    font-family: 'Inter', 'Noto Sans TC', sans-serif;
+  }
+}
+
+@layer components {
+  .card {
+    @apply bg-white rounded-bnp-lg shadow-sm p-6;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+  }
+  
+  .btn-primary {
+    @apply bg-bnp-primary text-white px-6 py-3 rounded-2xl font-semibold 
+           transition-all duration-300 hover:bg-bnp-deep hover:shadow-lg 
+           hover:scale-105 active:scale-100;
+  }
+  
+  .btn-secondary {
+    @apply bg-white text-bnp-primary px-6 py-3 rounded-2xl font-semibold 
+           border-2 border-bnp-primary transition-all duration-300 
+           hover:bg-bnp-primary hover:text-white hover:shadow-lg;
+  }
+}
