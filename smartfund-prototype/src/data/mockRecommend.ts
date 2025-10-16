@@ -182,11 +182,20 @@ export const calculateRiskProfile = (answers: { [key: string]: string }): {
 } => {
   let totalScore = 0;
   
+  // 確保 answers 存在且為物件
+  if (!answers || typeof answers !== 'object') {
+    return { 
+      profile: "未完成評估", 
+      score: 0, 
+      description: "請完成所有問題以獲得完整的風險屬性評估。" 
+    };
+  }
+  
   kycQuestions.forEach((question) => {
     const answer = answers[question.id];
-    if (answer) {
-      const option = question.options.find(opt => opt.value === answer);
-      if (option) {
+    if (answer && question.options) {
+      const option = question.options.find(opt => opt && opt.value === answer);
+      if (option && typeof option.score === 'number') {
         totalScore += option.score;
       }
     }
@@ -214,6 +223,11 @@ export const calculateRiskProfile = (answers: { [key: string]: string }): {
 
 // 根據風險屬性生成建議配置
 export const getRecommendation = (profile: string): RecommendationData => {
+  // 確保 profile 存在且為字串
+  if (!profile || typeof profile !== 'string') {
+    profile = "穩健平衡型";
+  }
+  
   const recommendations: { [key: string]: RecommendationData } = {
     "保守型": {
       riskProfile: "保守型 (Conservative)",
@@ -291,6 +305,11 @@ export const getRecommendation = (profile: string): RecommendationData => {
 
 // 根據風險屬性推薦產品
 export const getRecommendedProducts = (profile: string): string[] => {
+  // 確保 profile 存在且為字串
+  if (!profile || typeof profile !== 'string') {
+    profile = "穩健平衡型";
+  }
+  
   const productRecommendations: { [key: string]: string[] } = {
     "保守型": [
       "法商法國巴黎人壽寶富利外幣變額年金保險（乙型）",
