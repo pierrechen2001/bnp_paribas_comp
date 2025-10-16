@@ -1,7 +1,7 @@
 import { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, TrendingUp, TrendingDown, DollarSign, BarChart3, Info } from 'lucide-react';
+import { ArrowLeft, TrendingUp, TrendingDown, DollarSign, BarChart3, Info, Shield } from 'lucide-react';
 import { LineChart, Line, PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 import Navbar from '../components/Navbar';
 import KPICard from '../components/KPICard';
@@ -104,14 +104,29 @@ const PolicyDetail = () => {
           className="mb-8"
         >
           <div className="flex items-start justify-between">
-            <div>
-              <h1 className="text-4xl font-bold text-bnp-black mb-2">{policy.name}</h1>
-              <p className="text-gray-600">保單編號：{policy.id}</p>
+            <div className="flex-1">
+              <h1 className="text-3xl md:text-4xl font-bold text-bnp-black mb-3">{policy.name}</h1>
+              <div className="flex flex-wrap items-center gap-4 mb-3">
+                <p className="text-gray-600">保單編號：{policy.id}</p>
+                <span className="text-gray-300">|</span>
+                <p className="text-gray-700 font-medium">{policy.type}</p>
+                <span className="text-gray-300">|</span>
+                <div className={`inline-flex items-center space-x-1 px-3 py-1 rounded-lg border-2 font-semibold ${
+                  policy.riskLevel <= 2 
+                    ? 'bg-green-50 text-green-700 border-green-400' 
+                    : policy.riskLevel <= 3 
+                    ? 'bg-yellow-50 text-yellow-700 border-yellow-400' 
+                    : 'bg-red-50 text-red-700 border-red-400'
+                }`}>
+                  <Shield size={16} />
+                  <span>風險等級 RR{policy.riskLevel}</span>
+                </div>
+              </div>
             </div>
             {isPositive ? (
-              <TrendingUp className="text-bnp-profit-green" size={48} />
+              <TrendingUp className="text-bnp-profit-green flex-shrink-0" size={48} />
             ) : (
-              <TrendingDown className="text-bnp-alert-red" size={48} />
+              <TrendingDown className="text-bnp-alert-red flex-shrink-0" size={48} />
             )}
           </div>
         </motion.div>
@@ -225,24 +240,15 @@ const PolicyDetail = () => {
                 dataKey="average" 
                 stroke="#FFE66D" 
                 strokeWidth={3}
-                name="同類平均"
+                name={`同類平均（${policy.type}）`}
                 strokeDasharray="5 5"
                 dot={{ fill: '#FFE66D', r: 4 }}
-              />
-              <Line 
-                type="monotone" 
-                dataKey="benchmark" 
-                stroke="#FF6B6B" 
-                strokeWidth={2}
-                name="基準指數"
-                strokeDasharray="3 3"
-                dot={{ fill: '#FF6B6B', r: 3 }}
               />
             </LineChart>
           </ResponsiveContainer>
           
           {/* Chart Explanation */}
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-gradient-to-r from-cyan-50 to-cyan-100 p-4 rounded-lg border-l-4 border-cyan-500">
               <div className="flex items-center space-x-2 mb-2">
                 <div className="w-3 h-3 bg-cyan-500 rounded-full"></div>
@@ -253,16 +259,9 @@ const PolicyDetail = () => {
             <div className="bg-gradient-to-r from-yellow-50 to-yellow-100 p-4 rounded-lg border-l-4 border-yellow-500">
               <div className="flex items-center space-x-2 mb-2">
                 <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
-                <span className="font-semibold text-gray-800">同類平均</span>
+                <span className="font-semibold text-gray-800">同類平均（{policy.type}）</span>
               </div>
-              <p className="text-xs text-gray-600">同類型保單的平均績效，可用來比較您的投資表現。</p>
-            </div>
-            <div className="bg-gradient-to-r from-red-50 to-red-100 p-4 rounded-lg border-l-4 border-red-500">
-              <div className="flex items-center space-x-2 mb-2">
-                <div className="w-3 h-3 bg-red-500 rounded-full"></div>
-                <span className="font-semibold text-gray-800">基準指數</span>
-              </div>
-              <p className="text-xs text-gray-600">市場基準指標，用於衡量整體市場走勢。</p>
+              <p className="text-xs text-gray-600">法國巴黎人壽所有{policy.type}的平均績效，可用來比較您的投資表現。</p>
             </div>
           </div>
         </motion.div>
