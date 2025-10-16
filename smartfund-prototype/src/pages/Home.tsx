@@ -1,4 +1,5 @@
 import { motion } from 'framer-motion';
+import { Link } from 'react-router-dom';
 import { DollarSign, TrendingUp, Wallet } from 'lucide-react';
 import Navbar from '../components/Navbar';
 import KPICard from '../components/KPICard';
@@ -82,9 +83,9 @@ const Home = () => {
                 使用 AI 智能分析，為您量身打造最適合的投資組合建議
               </p>
             </div>
-            <a href="/recommend" className="btn-secondary bg-white text-bnp-primary border-0 hover:bg-opacity-90">
+            <Link to="/recommend" className="btn-secondary bg-white text-bnp-primary border-0 hover:bg-opacity-90">
               立即分析
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>
